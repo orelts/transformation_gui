@@ -26,8 +26,8 @@ class SimpleTableInput(tk.Frame):
         for row in range(self.rows):
             for column in range(self.columns):
                 index = (row, column)
-                e = tk.Entry(self, validate="key", validatecommand=vcmd, font=('Georgia 30'))
-                e.grid(row=row, column=column, stick="nsew", ipadx=50, ipady=10)
+                e = tk.Entry(self, validate="key", validatecommand=vcmd, font=('Georgia 20'))
+                e.grid(row=row, column=column, stick="nsew", ipadx=25, ipady=5)
                 self._entry[index] = e
                 if column == row:
                     
@@ -56,6 +56,9 @@ class SimpleTableInput(tk.Frame):
 
         Allow only an empty value, or a value that can be converted to a float
         '''
+        if P.strip() == "-":
+            return True
+
         if P.strip() == "":
             return True
 
@@ -68,11 +71,12 @@ class SimpleTableInput(tk.Frame):
 
 
 class Polygon:
-    def __init__(self, points, trans=None):
+    def __init__(self, points, trans=None, axlim=None):
         self.transformation_applied_before = trans
         self.points = points
         self.figure = None
         self.canvas = None
+        self.axlim = None
     
     def add_figure(self, f):
         self.figure = f
@@ -93,9 +97,18 @@ class Polygon:
         ymin = min(min(polygon_list[:, 1]))
         ymax = max(max(polygon_list[:, 1]))
 
-        xlim = round(max(abs(xmin), abs(xmax)) * 2)
-        ylim = round(max(abs(ymin), abs(ymax)) * 2)
+        xlim = round(max(abs(xmin), abs(xmax)))
+        ylim = round(max(abs(ymin), abs(ymax)))
+        
+        if (self.axlim is not None) and (self.axlim[0] >= xlim) and (self.axlim[1] >= ylim):   
+            xlim = self.axlim[0]
+            ylim = self.axlim[1]
+        else:
+            self.axlim = (xlim, ylim)
 
+        xlim = xlim + 2
+        ylim = ylim + 2
+        
         plt.xlim([-xlim, xlim + 1])
         plt.ylim([-ylim, ylim + 1])
 
@@ -110,9 +123,10 @@ class Polygon:
 class Polygons(tk.Frame):
     def __init__(self, parent, points):
         tk.Frame.__init__(self, parent)
-        points = tr.get_points_single(-1)
+    
         self.polygons = []
         self.draw(polyg=Polygon(points=points))
+        self.axlim = self.polygons[0].axlim
         
     def draw(self, polyg, size=(5, 5)):    
         f = polyg.plot_polyg([polyg.points], size=size, num=len(self.polygons))
@@ -152,8 +166,8 @@ class Polygons(tk.Frame):
             print("No Polygons nothing to undo")
         else:
             polyg = self.polygons[-1]
+            plt.close(polyg.figure)
             polyg.canvas.get_tk_widget().destroy()
-            
             self.polygons = self.polygons[:-1]
         
         
@@ -163,23 +177,24 @@ class MyNiceTransformations(tk.Tk):
         
         tk.Tk.__init__(self, *args, **kwargs)
         tk.Tk.wm_title(self, "Transformations GUI")
-        
         myFont = font.Font(size=30)
-        self.polyg = Polygons(self, points=np.array([[1,1], [2,2], [0,1]]).T)
+
+        points = tr.get_points_single(-1)
+        self.polyg = Polygons(self, points=points)
         self.polyg.grid(row=0, column=0)
         
         self.table = SimpleTableInput(self, 3, 3)
         self.table.grid(row=1, column=0)
         
-        self.submit = tk.Button(self.polyg, text="Submit", command=self.on_submit, height=5, width=20)
+        self.submit = tk.Button(self.polyg, text="Submit", command=self.on_submit, height=5, width=10)
         self.submit['font'] = myFont
         self.submit.pack(side=tk.RIGHT)
     
-        self.undo = tk.Button(self.polyg, text="Undo", command=self.undo, height=5, width=20)
+        self.undo = tk.Button(self.polyg, text="Undo", command=self.undo, height=5, width=10)
         self.undo['font'] = myFont
         self.undo.pack(side=tk.RIGHT)
 
-        self.full_trans = tk.Button(self.polyg, text="Transformation", command=self.full_trans, height=5, width=20)
+        self.full_trans = tk.Button(self.polyg, text="Matrix", command=self.full_trans, height=5, width=10)
         self.full_trans['font'] = myFont
         self.full_trans.pack(side=tk.RIGHT)
 

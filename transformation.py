@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 matplotlib.use("TkAgg")
 
-def get_points_single(N, size=(5, 5)):
+def get_points_single(N, size=(15, 15)):
     """
     Args:
         im: 2D grayscale image
@@ -20,6 +20,7 @@ def get_points_single(N, size=(5, 5)):
     axlim = 10
     plt.xlim([-axlim, axlim])
     plt.ylim([-axlim, axlim])
+    plt.title("Select Polygon Corners - Left Click   |   Undo selection - Right Click   |   Finish - Press wheel", fontsize=20)
     plt.xticks(np.arange(-axlim, axlim, 1))
     plt.yticks(np.arange(-axlim, axlim, 1))
 
