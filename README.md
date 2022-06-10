@@ -108,7 +108,7 @@ Open the Polygon selection window. Make sure not to close the application window
 
 <br />
 <div align="center">
-  <img width="500", img height="200" alt="after_selection" src="https://user-images.githubusercontent.com/59450815/173088417-78a78cc8-453a-4c53-ac23-17d3c1333036.png">
+  <img width="500", img height="200", alt="after_selection" src="https://user-images.githubusercontent.com/59450815/173088417-78a78cc8-453a-4c53-ac23-17d3c1333036.png">
 
   </a>
 
@@ -120,7 +120,8 @@ Open the Polygon selection window. Make sure not to close the application window
                    
 <br />
 <div align="center">
-<img width="500", img height="200" alt="after_selection" src="https://user-images.githubusercontent.com/59450815/173088983-64dd51a8-eed6-4a45-aa06-630c33c9e895.png">
+<img width="500", img height="200", alt="transformed" src="https://user-images.githubusercontent.com/59450815/173089986-ab70b8bb-e9cb-4d0d-84ed-678cd6e89199.png">
+           
   </a>
   <p align="center">
     This is example for 90 degrees rotation
