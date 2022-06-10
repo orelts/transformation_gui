@@ -211,7 +211,15 @@ class MyNiceTransformations(tk.Tk):
         tkinter.messagebox.showinfo("Total Transformations",f"{trans}")
 
 
+
 app = MyNiceTransformations()
+
+def on_closing():
+    if tkinter.messagebox.askokcancel("Quit", "Do you want to quit?"):
+        app.quit()
+        app.destroy()
+
+app.protocol("WM_DELETE_WINDOW", on_closing)
 app.mainloop()
         
 

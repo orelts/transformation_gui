@@ -20,7 +20,7 @@ def get_points_single(N, size=(15, 15)):
     axlim = 10
     plt.xlim([-axlim, axlim])
     plt.ylim([-axlim, axlim])
-    plt.title("Select Polygon Corners - Left Click   |   Undo selection - Right Click   |   Finish - Press wheel", fontsize=20)
+    plt.title("Select Polygon Corners - Left Click   |   Undo selection - Right Click   |   Finish - Press wheel", fontsize=25)
     plt.xticks(np.arange(-axlim, axlim, 1))
     plt.yticks(np.arange(-axlim, axlim, 1))
 
